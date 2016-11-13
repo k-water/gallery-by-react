@@ -13,7 +13,7 @@ body {
 .stage {
     position: relative;
     width: 100%;
-    height: 680px;
+    height: 100%;
 }
 
 .img-sec {
@@ -22,6 +22,7 @@ body {
     height: 100%;
     overflow: hidden;
     background-color: #ddd;
+    perspective: 1800px;
     @at-root {
         .img-figure {
             position: absolute;
@@ -31,6 +32,13 @@ body {
             padding: 40px;
             background: #fff;
             box-sizing: border-box;
+            cursor: pointer;
+            transform-origin: 0 50% 0;
+            transform-style: preserve-3d;
+            transition: transform .6s ease-in-out, left .6s ease-in-out, top .6s ease-in-out;
+            &.is-inverse {
+                transform: translate(320px) rotateY(180deg);
+            }
         }
         figcaption {
             text-align: center;
@@ -38,6 +46,25 @@ body {
                 margin: 20px 0 0 0;
                 color: #a7a0a2;
                 font-size: 16px;
+            }
+            .imgBack {
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: 100%;
+                height: 100%;
+                padding: 50px 40px;
+                overflow: auto;
+                color: #a7a0a2;
+                font-size: 22px;
+                line-height: 1.25;
+                text-align: left;
+                box-sizing: border-box;
+                transform: rotateY(180deg) translateZ(1px);
+                background: #fff;
+                p {
+                    margin: 0;
+                }
             }
         }
     }
