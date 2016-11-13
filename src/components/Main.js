@@ -29,8 +29,11 @@ let get30DegRandom = () =>{
 var ImgFigure = React.createClass({
 
   handleClick: function (e) {  
-
-    this.props.inverse();
+    if(this.props.arrange.isCenter) {
+      this.props.inverse();
+    } else {
+      this.props.center();
+    }
     e.stopPropagation();
     e.preventDefault();
   },
@@ -47,6 +50,10 @@ var ImgFigure = React.createClass({
         (['Moz','Ms','Webkit','']).forEach((value)=>{
           styleObj[value + 'Transform'] = 'rotate(' + this.props.arrange.rotate + 'deg)';
         });
+      }
+
+      if(this.props.arrange.isCenter) {
+        styleObj.zIndex = 11;
       }
 
       var imgFigureClassName = "img-figure";
@@ -123,11 +130,13 @@ var AppComponent = React.createClass({
 
         imgsArrangeCenterArr = imgsArrangeArr.splice(centerIndex,1);
 
-        //首先居中centerIndex的图片
-        imgsArrangeCenterArr[0].pos = centerPos;
+        //首先居中centerIndex的图片,居中的图片不需要旋转
+        imgsArrangeCenterArr[0] = {
+          pos: centerPos,
+          rotate: 0,
+          isCenter: true
+        }
         
-        //居中的图片不需要旋转
-        imgsArrangeCenterArr[0].rotate = 0;
 
         //取出要布局上侧的图片的状态信息
         topImgSpliceIndex = Math.ceil(Math.random() * (imgsArrangeArr.length - topImgNum));
@@ -140,7 +149,8 @@ var AppComponent = React.createClass({
               top: getRangeRandom(vPosRangeTopY[0],vPosRangeTopY[1]),
               left: getRangeRandom(vPosRangeX[0],vPosRangeX[1])
             },
-            rotate: get30DegRandom()
+            rotate: get30DegRandom(),
+            isCenter: false
           };
         });
 
@@ -159,7 +169,8 @@ var AppComponent = React.createClass({
               top: getRangeRandom(hPosRangeY[0],hPosRangeY[1]),
               left: getRangeRandom(hPosRangeLORX[0],hPosRangeLORX[1])
             },
-            rotate: get30DegRandom()
+            rotate: get30DegRandom(),
+            isCenter: false
           };
         }
 
@@ -172,6 +183,16 @@ var AppComponent = React.createClass({
         this.setState({
           imgsArrangeArr: imgsArrangeArr
         });
+  },
+  /**
+   * 利用rearrange函数，居中对应index的图片
+   * @param index，需要被居中的图片对应的图片信息数组的index
+   * @return {Function}
+   */
+  center: function (index) {  
+    return ()=>{
+      this.rearrange(index);
+    }
   },
   //保存状态
   getInitialState: function () {
@@ -227,11 +248,12 @@ var AppComponent = React.createClass({
             top: 0
           },
           rotate: 0,
-          isInverse: false
+          isInverse: false,
+          isCenter: false
         };
       }
       
-      imgFigures.push(<ImgFigure data={value} ref={'imgFigure'+index} key={index} arrange={this.state.imgsArrangeArr[index]} inverse={this.inverse(index)}/>);
+      imgFigures.push(<ImgFigure data={value} ref={'imgFigure'+index} key={index} arrange={this.state.imgsArrangeArr[index]} center={this.center(index)} inverse={this.inverse(index)}/>);
     });
     return (
       <section className="stage" ref="stage">
