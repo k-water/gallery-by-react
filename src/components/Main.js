@@ -73,6 +73,19 @@ var ImgFigure = React.createClass({
   }
 })
 
+var ControllerUnits = React.createClass({
+  handleClick: function (e) {  
+
+    e.preventDefault();
+    e.stopPropagation();
+  },
+  render: function () {  
+    return (
+      <span className="controller-unit" onClick={this.handleClick}></span>
+    );
+  }
+});
+
 var AppComponent = React.createClass({
   Constant: {
     centerPos: {
@@ -254,6 +267,7 @@ var AppComponent = React.createClass({
       }
       
       imgFigures.push(<ImgFigure data={value} ref={'imgFigure'+index} key={index} arrange={this.state.imgsArrangeArr[index]} center={this.center(index)} inverse={this.inverse(index)}/>);
+      controllerUnits.push(<ControllerUnits key={index}/>);
     });
     return (
       <section className="stage" ref="stage">
