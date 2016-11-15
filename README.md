@@ -14,5 +14,9 @@ one photo gallery project by react.
 ## 使用
 自己看着视频学习，打包出来之后图片路径还有点问题，之后会解决，所以现在只能clone下来，然后运行`npm start`进行本地预览
 
+** 效果预览 **
+
+![](http://oc1gyfe6q.qnssl.com/public/16-11-15/77988048.jpg)
+
 ##总结(by 小菜鸟)
 喜欢的朋友可以给个小星星，有问题欢迎联系我，一起探讨学习
